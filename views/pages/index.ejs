@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <main>
+      <div class="jumbotron">
+        <h1>Welcome to UserData Mock 2000!</h1>
+        <form>
+          <button>Load</button>
+        </form>
+        <br />
+        <% user_info.forEach(function(user) { %>
+        <h2><%= user.name %></h2>
+        <p>City: <%= user.city %></p>
+        <p>Company: <%= user.company %></p>
+        <br />
+        <% }); %>
+      </div>
+    </main>
+    <footer><%- include('../partials/footer'); %></footer>
+  </body>
+</html>

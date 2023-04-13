@@ -1,49 +1,49 @@
-let express = require("express")
-let axios = require("axios")
-let bodyparser = require("body-Parser")
+let express = require('express');
+let axios = require('axios');
+let bodyparser = require('body-parser');
 
-app = express()
+const app = express();
 
-app.use(bodyparser.urlencoded())
+app.use(bodyparser.urlencoded());
 
 app.set('view engine', 'ejs');
 
-const user_info = []
-const final_list = []
+const final_list = [];
 
-app.get('/', function(req, res){
-    var url = "https://jsonplaceholder.typicode.com/users";
-    axios.get(url)
-    .then((response)=>{
-        let example = response.data
-        length_of_json = Number(example.length)
-        for (let i = 0; i < length_of_json; i++) { 
-            name_of_user = example[i]["name"]
-            city_of_user = example[i]["address"]["city"]
-            users_company = example[i]["company"]["name"]
+app.get('/', function (req, res) {
+  let url = 'https://jsonplaceholder.typicode.com/users';
+  const user_info = [];
 
-            user_var = {"name" : name_of_user, "city" : city_of_user, "company" : users_company}
+  axios.get(url).then(response => {
+    let data = response.data;
+    console.log(data);
+    for (let i = 0; i < 3; i++) {
+      const randomIndex = Math.floor(Math.random() * data.length);
+      const randomUser = data[randomIndex];
+      user_info.push({
+        name: randomUser.name,
+        city: randomUser.address.city,
+        company: randomUser.company.name,
+      });
+    }
 
-            user_info.push(user_var)
-        }
-          res.render('pages/index',{})
-        }
-)})
-   
-app.post('/post', function(req, res){
+    console.log(user_info);
+    res.render('pages/index', {
+      user_info,
+    });
+  });
+});
 
-  //console.log("checkedbox checked: " + check);
- for (let i = 0; i < 3; i++){
-   random_number = Math.floor(Math.random()*10)
-   string_to_add = user_info[random_number]
-   final_list.push(string_to_add)
-   }
+app.post('/', function (req, res) {
+  for (let i = 0; i < 3; i++) {
+    let random_number = Math.floor(Math.random() * 10);
+    let string_to_add = user_info[random_number];
+    final_list.push(string_to_add);
+  }
 
-   res.render('pages/index.ejs', {body: final_list})
-  
-  })
+  res.render('pages/index.ejs', {body: final_list});
+});
 
-
-
-app.listen(8080)
-console.log("Application is connected")
+app.listen(8080);
+console.log('Application is connected to port 8080');
+console.log('http://localhost:8080/');
